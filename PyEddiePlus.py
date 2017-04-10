@@ -49,10 +49,12 @@ class EddiePlus:
         
         self.Name = Name
         self.host_any = ""
-        self.EddieBroadcastAddr = ('192.168.1.255',4240) # For Linksys E1200 --> You'rs may be different
+        #self.EddieBroadcastAddr = ('192.168.1.255',4240) # For Linksys E1200 --> You'rs may be different
+        self.EddieBroadcastAddr = ('10.0.1.255',4240) 
         self.EddieResponseAddr = (self.host_any, 4243)
         self.sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM) # UDP
         self.sock.settimeout(2.0)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         
         self.GetStreamingData = False
         
@@ -144,7 +146,7 @@ class EddiePlus:
             return 0
             
         cmd = "TURN{0}".format(int(TurnSpeed))
-        #print self.Name + ": " + cmd
+        print self.Name + ": " + cmd
         ByteCount = self.sock.sendto(cmd, self.EddieCommandAddr)
         return ByteCount
 
